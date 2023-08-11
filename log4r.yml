@@ -1,0 +1,57 @@
+description: config file for log4r
+
+---
+# *** YAML2LOG4R ***
+log4r_config:
+  # define all pre config ...
+  pre_config:
+    global:
+      level: DEBUG
+    root  :
+      level: DEBUG
+
+  # define all loggers ...
+  loggers:
+    - name      : myproject
+      level     : DEBUG
+      additive  : 'false'
+      trace     : 'false'
+      outputters:
+        - stderr
+        - logfile
+        - email
+
+
+  # define all outputters (incl. formatters)
+  outputters:
+    - type     : StderrOutputter
+      name     : stderr
+      level    : INFO
+      formatter:
+        date_pattern: #'%y%m%d %H:%M:%S'
+        pattern     : '[%c] %l: %m'
+        type        : PatternFormatter
+
+    - type        : DateFileOutputter
+      name        : logfile
+      level       : DEBUG
+      date_pattern: #'%Y%m%d'
+      trunc       : 'false'
+      dirname     : "."
+      formatter   :
+        date_pattern: '%H:%M:%S'
+        pattern     : '[%c] %d %l: %m'
+        type        : PatternFormatter
+
+    - type        : EmailOutputter
+      name        : email
+      level       : FATAL
+      server      : <server domain>
+      subject     : 'Message myproject:'
+      from        : <email address>
+      to          : <email address>
+      formatter   :
+        date_pattern: #'%y%m%d %H:%M:%S'
+        pattern     : '%d %l: %m'
+        type        : PatternFormatter
+---
